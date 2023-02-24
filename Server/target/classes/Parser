@@ -1,0 +1,129 @@
+package com.mycompany.server.parser;
+
+class Parser;
+
+parser code {:
+    public Parser(Lexer lexer){
+        super(lexer);
+    }
+
+:}
+
+terminal Token PLUS,MINUS,MULT,DIV,Parenth_O,Parenth_C,NAME,ROW,COLS,CONFIG,BOTCOLOR,TCOLOR,BCOLOR,BRCOLOR,HCOLOR,UCOLOR,PCOLOR,BOARD,POSX,POSY,TYPE,BOXES,PLAYER,
+FLOOR,CEIL,BRICK,HALL,HEXA,ID,DPUNTOS,COMMA,P_COMMA,COMILLAS,Key_O,Key_C,Cor_O,Cor_C,TARGETS,HASH;
+terminal Token INT,DECIMAL;
+non terminal Double a,b,c,d,Operation;
+non terminal Name,Rows,x,Cols,Config,Board,Boxes,Targets,Player,DefConfig,ColorConfig,DefBoard,BoardConfig,DefTargets,TargetsConfig,DefPlayer,
+PlayerConfig,Color,Posx,Posy,Type,T,DefBoxes,BoxesConfig;
+/*GRAMATICA*/
+
+/* OPERATION */
+
+Operation       ::= a:e     {:System.out.println("LA OPERACION ES " + e);:};
+		
+a		::= a:n1 PLUS b:n2    {:RESULT = n1+n2;:}
+		|   a:n1 MINUS b:n2   {:RESULT = n1-n2;:}
+		|   b:n1              {:RESULT = n1;:}  
+                ;
+
+b		::= b:n1 MULT c:n2    {:RESULT = n1 * n2;:}
+		|   b:n1 DIV c:n2     {:RESULT = n1 / n2;:}
+		|   c:n1              {:RESULT = n1;:}
+                ;
+                    
+			
+c		::= Parenth_O a:n1 Parenth_C      {:RESULT = n1;:}
+                | d:n1                              {:RESULT = n1;:}    
+                ;
+
+d               ::= FLOOR Parenth_O a:n1   Parenth_C    {:RESULT = Math.floor(n1); :}
+                |   CEIL  Parenth_O a:n1   Parenth_C    {:RESULT = Math.ceil(n1); :}
+                |   INT:n1                              {:RESULT = Double.valueOf(n1.getValue());:}
+                |   DECIMAL:n1                          {:RESULT = Double.valueOf(n1.getValue());:}
+		;	
+
+
+Name            ::= COMILLAS NAME COMILLAS DPUNTOS COMILLAS ID COMILLAS {: :}
+                ; 
+Rows            ::= COMILLAS ROW COMILLAS DPUNTOS COMILLAS x COMILLAS {::}
+                ;
+
+
+Cols            ::= COMILLAS COLS COMILLAS DPUNTOS x COMILLAS {::}
+                ;
+
+
+Config          ::= COMILLAS CONFIG COMILLAS DPUNTOS Key_O  DefConfig     Key_C {::}
+                ;
+
+DefConfig       ::= ColorConfig                     {::}
+                |   ColorConfig COMMA DefConfig     {::}
+                ;
+
+ColorConfig     ::=  COMILLAS Color COMILLAS DPUNTOS Color HEXA {::}
+                ;
+Color           ::=  BCOLOR {::}
+                |   BOTCOLOR {::}
+                |   TCOLOR   {::}
+                |   BRCOLOR   {::}
+                |   HCOLOR    {::}
+                |   UCOLOR    {::}
+                |   PCOLOR    {::}
+                ;
+
+
+Board           ::= COMILLAS BOARD COMILLAS DPUNTOS Cor_O  DefBoard     Cor_C {:    :}
+                ;
+
+DefBoard        ::= BoardConfig {::}
+                |  BoardConfig COMMA DefBoard {::}
+                ;
+
+BoardConfig     ::= Key_O Posx COMMA Posy COMMA Type Key_C {::}
+                |   Key_O Posx COMMA Type COMMA Posy Key_C {::}
+                |   Key_O Posy COMMA Posx COMMA Type Key_C {::}
+                |   Key_O Posy COMMA Type COMMA Posx Key_C {::}
+                |   Key_O Type COMMA Posx COMMA Posy Key_C {::}
+                |   Key_O Type COMMA Posy COMMA Posx Key_C {::}
+                ;
+
+Posx            ::= COMILLAS POSX COMILLAS DPUNTOS x {::}
+                ;
+Posy            ::= COMILLAS POSY COMILLAS DPUNTOS x {::}
+                ;
+Type            ::= COMILLAS TYPE COMILLAS DPUNTOS T {::}
+                ;
+
+T               ::= COMILLAS BRICK COMILLAS {::}
+                |   COMILLAS HALL COMILLAS {::}
+                ;
+
+
+Boxes           ::= COMILLAS BOXES COMILLAS DPUNTOS Cor_O   DefBoxes    Cor_C   {:  :}
+                ;
+
+DefBoxes        ::= BoxesConfig                 {::}
+                |   BoxesConfig COMMA DefBoxes {::}
+                ;
+
+BoxesConfig     ::= Key_O Posx COMMA Posy Key_C {::}
+                |   Key_O Posy COMMA Posx Key_C {::}
+                ;
+
+Targets         ::= COMILLAS TARGETS COMILLAS DPUNTOS Cor_O  DefBoxes   Cor_C   {::}
+                ;
+
+                
+Player          ::= COMILLAS PLAYER COMILLAS DPUNTOS Key_O  BoxesConfig    Key_C   {::}
+                ;
+
+
+x               ::= INT:n1      {::}
+                | COMILLAS INT COMILLAS {::}
+                | COMILLAS Operation COMILLAS {::}
+                ;
+
+
+
+
+ 
