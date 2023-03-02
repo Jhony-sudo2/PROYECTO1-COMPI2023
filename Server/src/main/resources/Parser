@@ -6,20 +6,34 @@ parser code {:
     public Parser(Lexer lexer){
         super(lexer);
     }
+    
 
 :}
 
+
+/*--------------------TERMINALES------------------------*/
 terminal Token PLUS,MINUS,MULT,DIV,Parenth_O,Parenth_C,NAME,ROW,COLS,CONFIG,BOTCOLOR,TCOLOR,BCOLOR,BRCOLOR,HCOLOR,UCOLOR,PCOLOR,BOARD,POSX,POSY,TYPE,BOXES,PLAYER,
-FLOOR,CEIL,BRICK,HALL,HEXA,ID,DPUNTOS,COMMA,P_COMMA,COMILLAS,Key_O,Key_C,Cor_O,Cor_C,TARGETS,HASH;
-terminal Token INT,DECIMAL;
+FLOOR,CEIL,BRICK,HALL,HEXA,ID,DPUNTOS,COMMA,COMILLAS,Key_O,Key_C,Cor_O,Cor_C,TARGETS,INT,DECIMAL,WORLD,WORLDS,ALL;
+
+
+
+/*-----------------NO TERMINALES	--------------*/
 non terminal Double a,b,c,d,Operation;
-non terminal Name,Rows,x,Cols,Config,Board,Boxes,Targets,Player,DefConfig,ColorConfig,DefBoard,BoardConfig,DefTargets,TargetsConfig,DefPlayer,
-PlayerConfig,Color,Posx,Posy,Type,T,DefBoxes,BoxesConfig;
-/*GRAMATICA*/
+
+non terminal String Name,Rows,x,Cols,Config,Board,Boxes,Targets,Player,DefConfig,DefTargets,ColorConfig,DefBoard,BoardConfig,
+Color,Posx,Posy,Type,T,DefBoxes,BoxesConfig,Op,Production;
+
+non terminal String Initial;
+
+start with Initial;
+
+
+
+/*---------------------------GRAMATICA--------------------*/
 
 /* OPERATION */
 
-Operation       ::= a:e     {:System.out.println("LA OPERACION ES " + e);:};
+Operation       ::= a:e     {:RESULT  = e;:};
 		
 a		::= a:n1 PLUS b:n2    {:RESULT = n1+n2;:}
 		|   a:n1 MINUS b:n2   {:RESULT = n1-n2;:}
@@ -43,86 +57,137 @@ d               ::= FLOOR Parenth_O a:n1   Parenth_C    {:RESULT = Math.floor(n1
 		;	
 
 
-Name            ::= COMILLAS NAME COMILLAS DPUNTOS COMILLAS ID COMILLAS {: :}
+Name            ::= COMILLAS NAME COMILLAS DPUNTOS COMILLAS ID:n1 COMILLAS {:RESULT = "\t<name>" + n1.getValue() + "</name>\n"; :}
                 ; 
-Rows            ::= COMILLAS ROW COMILLAS DPUNTOS COMILLAS x COMILLAS {::}
+Rows            ::= COMILLAS ROW COMILLAS DPUNTOS  x:n1  {:RESULT = "\t<rows>" + n1 + "</rows>\n";:}
+                ;
+
+Cols            ::= COMILLAS COLS COMILLAS DPUNTOS x:n1  {:RESULT = "\t<cols>" + n1 + "</cols>\n";:}
                 ;
 
 
-Cols            ::= COMILLAS COLS COMILLAS DPUNTOS x COMILLAS {::}
+Config          ::= COMILLAS CONFIG COMILLAS DPUNTOS Key_O  DefConfig:n1     Key_C {:RESULT = "\t<config>\n" + n1 + "\t" +  "</config>\n";:}
+                ;
+
+DefConfig       ::= ColorConfig:n1                          {:RESULT = n1;:}
+                |   ColorConfig:n1 COMMA DefConfig:n2       {:RESULT = n1 + n2;:}
+                ;
+
+ColorConfig     ::=  COMILLAS Color:n1 COMILLAS DPUNTOS COMILLAS HEXA:n2 COMILLAS {:RESULT = "\t\t<"+n1+">"+n2.getValue() + "</"+n1+">" + "\n";:}
+                ;
+Color           ::= BCOLOR:n1       {:RESULT = "box_color"; :}
+                |   BOTCOLOR:n1     {:RESULT = "box_on_target_color";:}
+                |   TCOLOR:n1       {:RESULT = "target_color";:}
+                |   BRCOLOR:n1      {:RESULT = "brick_color";:}
+                |   HCOLOR:n1       {:RESULT = "hall_color";:}
+                |   UCOLOR:n1       {:RESULT = "undefined_color";:}
+                |   PCOLOR:n1       {:RESULT = "player_color";:}
                 ;
 
 
-Config          ::= COMILLAS CONFIG COMILLAS DPUNTOS Key_O  DefConfig     Key_C {::}
+Board           ::= COMILLAS BOARD COMILLAS DPUNTOS Cor_O  DefBoard:n1 Cor_C {: RESULT =n1; :}
                 ;
 
-DefConfig       ::= ColorConfig                     {::}
-                |   ColorConfig COMMA DefConfig     {::}
+DefBoard        ::= BoardConfig:n1 {:RESULT ="\n\t<board>" + n1 + "\t</board>\n";:}
+                |  BoardConfig:n1 COMMA DefBoard:n2 {:RESULT ="\t<board>" + n1 + "\t</board>\n"  + n2;:}
                 ;
 
-ColorConfig     ::=  COMILLAS Color COMILLAS DPUNTOS Color HEXA {::}
-                ;
-Color           ::=  BCOLOR {::}
-                |   BOTCOLOR {::}
-                |   TCOLOR   {::}
-                |   BRCOLOR   {::}
-                |   HCOLOR    {::}
-                |   UCOLOR    {::}
-                |   PCOLOR    {::}
+BoardConfig     ::= Key_O Posx:n1 COMMA Posy:n2 COMMA Type:n3 Key_C {:RESULT = "\n" + n1 + "\n" + n2 +"\n" +  n3 + "\n";:}
+                |   Key_O Posx:n1 COMMA Type:n2 COMMA Posy:n3 Key_C {:RESULT = "\n" + n1 + "\n" + n2 +"\n" +  n3 + "\n";:}
+                |   Key_O Posy:n1 COMMA Posx:n2 COMMA Type:n3 Key_C {:RESULT = "\n" + n1 + "\n" + n2 +"\n" +  n3 + "\n";:}
+                |   Key_O Posy:n1 COMMA Type:n2 COMMA Posx:n3 Key_C {:RESULT = "\n" + n1 + "\n" + n2 +"\n" +  n3 + "\n";:}
+                |   Key_O Type:n1 COMMA Posx:n2 COMMA Posy:n3 Key_C {:RESULT = "\n" + n1 + "\n" + n2 +"\n" +  n3 + "\n";:}
+                |   Key_O Type:n1 COMMA Posy:n2 COMMA Posx:n3 Key_C {:RESULT = "\n" + n1 + "\n" + n2 +"\n" +  n3 + "\n";:}
                 ;
 
-
-Board           ::= COMILLAS BOARD COMILLAS DPUNTOS Cor_O  DefBoard     Cor_C {:    :}
+Posx            ::= COMILLAS POSX COMILLAS DPUNTOS x:n1 {:RESULT = "\t\t<posX>" + n1 + "</posX>"; :}
+                ;
+Posy            ::= COMILLAS POSY COMILLAS DPUNTOS x:n1 {:RESULT = "\t\t<posY>" + n1 + "</posY>";:}
+                ;
+Type            ::= COMILLAS TYPE COMILLAS DPUNTOS T:n1 {:RESULT = "\t\t<type>" + n1 + "</type>"; :}
                 ;
 
-DefBoard        ::= BoardConfig {::}
-                |  BoardConfig COMMA DefBoard {::}
-                ;
-
-BoardConfig     ::= Key_O Posx COMMA Posy COMMA Type Key_C {::}
-                |   Key_O Posx COMMA Type COMMA Posy Key_C {::}
-                |   Key_O Posy COMMA Posx COMMA Type Key_C {::}
-                |   Key_O Posy COMMA Type COMMA Posx Key_C {::}
-                |   Key_O Type COMMA Posx COMMA Posy Key_C {::}
-                |   Key_O Type COMMA Posy COMMA Posx Key_C {::}
-                ;
-
-Posx            ::= COMILLAS POSX COMILLAS DPUNTOS x {::}
-                ;
-Posy            ::= COMILLAS POSY COMILLAS DPUNTOS x {::}
-                ;
-Type            ::= COMILLAS TYPE COMILLAS DPUNTOS T {::}
-                ;
-
-T               ::= COMILLAS BRICK COMILLAS {::}
-                |   COMILLAS HALL COMILLAS {::}
+T               ::= COMILLAS BRICK COMILLAS {:RESULT = "BRICK";:}
+                |   COMILLAS HALL COMILLAS {:RESULT = "HALL";:}
                 ;
 
 
-Boxes           ::= COMILLAS BOXES COMILLAS DPUNTOS Cor_O   DefBoxes    Cor_C   {:  :}
+Boxes           ::= COMILLAS BOXES COMILLAS DPUNTOS Cor_O   DefBoxes:n1    Cor_C   {:RESULT = n1;  :}
                 ;
 
-DefBoxes        ::= BoxesConfig                 {::}
-                |   BoxesConfig COMMA DefBoxes {::}
+DefBoxes        ::= BoxesConfig:n1                      {:RESULT = "\n\t<boxes>" + n1 + "\t</boxes>"; :}
+                |   BoxesConfig:n1 COMMA DefBoxes:n2    {:RESULT = "\n\t<boxes>" + n1 + "\t</boxes>" + n2;:}
                 ;
 
-BoxesConfig     ::= Key_O Posx COMMA Posy Key_C {::}
-                |   Key_O Posy COMMA Posx Key_C {::}
+BoxesConfig     ::= Key_O Posx:n1 COMMA Posy:n2 Key_C {:RESULT = "\n" + n1 + "\n" + n2 + "\n";:}
+                |   Key_O Posy:n1 COMMA Posx:n2 Key_C {:RESULT = "\n" + n1 + "\n" + n2 + "\n";:}
                 ;
 
-Targets         ::= COMILLAS TARGETS COMILLAS DPUNTOS Cor_O  DefBoxes   Cor_C   {::}
+Targets         ::= COMILLAS TARGETS COMILLAS DPUNTOS Cor_O  DefTargets:n1   Cor_C   {:RESULT = n1;:}
                 ;
 
+DefTargets      ::= BoxesConfig:n1                      {:RESULT = "\n\t<targets>" + n1 + "\t</targets>"; :}
+                |   BoxesConfig:n1 COMMA DefTargets:n2    {:RESULT = "\n\t<targets>" + n1 + "\t</targets>" + n2;:}
+                ;
                 
-Player          ::= COMILLAS PLAYER COMILLAS DPUNTOS Key_O  BoxesConfig    Key_C   {::}
+Player          ::= COMILLAS PLAYER COMILLAS DPUNTOS   BoxesConfig:n1   {:RESULT = "\n\t<player>" + n1 + "\t</player>";:}
                 ;
 
 
-x               ::= INT:n1      {::}
-                | COMILLAS INT COMILLAS {::}
-                | COMILLAS Operation COMILLAS {::}
+x               ::= INT:n1      {:RESULT = n1.getValue();:}
+
+                | COMILLAS Operation:n1 COMILLAS {:   
+                                                    if(n1%1 == 0){
+                                                        Double NewI = new Double(n1);
+                                                        Integer Value = NewI.intValue();
+                                                        RESULT = Value + "";    
+                                                    }else{
+                                                        
+                                                    }    
+                                                    :}
                 ;
 
+
+Initial         ::= Key_O Op:n1  Key_C 		{:System.out.println(n1);:}
+                |   Key_O COMILLAS WORLD COMILLAS DPUNTOS COMILLAS ID:n1 COMILLAS Key_C {::}
+                |   Key_O COMILLAS WORLDS COMILLAS DPUNTOS COMILLAS ALL:n1 COMILLAS Key_C {::}
+                ;
+                
+                
+Op    		::= Production:n1 COMMA Op:n2    {:RESULT = n1 + n2;:}
+		|   Production:n1 		 {:RESULT = n1;:}
+		;
+
+
+Production	::= 	Name:n1    {:RESULT = n1;:}
+		|	Rows:n1	   {:RESULT = n1;:}
+		|   	Cols:n1    {:RESULT = n1;:}
+		| 	Config:n1  {:RESULT = n1;:}
+		| 	Board:n1   {:RESULT = n1;:}
+		| 	Boxes:n1   {:RESULT = n1;:}
+		| 	Targets:n1 {:RESULT = n1;:}
+		| 	Player:n1  {:RESULT = n1;:}
+		;     
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
 
 
 

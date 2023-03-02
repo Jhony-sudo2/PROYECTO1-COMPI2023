@@ -1,0 +1,65 @@
+package com.mycompany.server.parser;
+
+class Parser;
+
+
+public static String Name = "";
+parser code {:
+    public Parser(Lexer lexer){
+        super(lexer);
+    }
+    
+
+    public int getLine(int Line){
+        return Line;    
+    }
+    
+
+:}
+
+
+/*--------------------TERMINALES------------------------*/
+terminal 
+terminal Token WORLD,ID,INT,SLASH,GTHAN,LTHAN,NAME;
+
+
+/*-----------------NO TERMINALES	--------------*/
+non terminal Integer a,b;
+start with Initial;
+
+
+
+/*---------------------------GRAMATICA--------------------*/
+a       ::= LTHAN NAME GTHAN ID:n1 LTHAN SLASH NAME GTHAN 
+        {:
+            if(n1.getValue() == Name){
+                
+            }
+                                                                :}
+         
+        ;
+
+
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+
+
+
+ 

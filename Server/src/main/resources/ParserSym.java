@@ -9,19 +9,19 @@ package com.mycompany.server.parser;
 public class ParserSym {
   /* terminals */
   public static final int TCOLOR = 13;
+  public static final int WORLDS = 42;
   public static final int MULT = 4;
-  public static final int Key_O = 35;
+  public static final int Key_O = 34;
   public static final int BRCOLOR = 15;
   public static final int HEXA = 29;
-  public static final int TARGETS = 39;
-  public static final int HASH = 40;
-  public static final int Cor_O = 37;
-  public static final int INT = 41;
-  public static final int Key_C = 36;
+  public static final int TARGETS = 38;
+  public static final int Cor_O = 36;
+  public static final int INT = 39;
+  public static final int Key_C = 35;
   public static final int MINUS = 3;
   public static final int FLOOR = 25;
   public static final int CONFIG = 11;
-  public static final int Cor_C = 38;
+  public static final int Cor_C = 37;
   public static final int TYPE = 22;
   public static final int BOARD = 19;
   public static final int COMMA = 32;
@@ -30,14 +30,14 @@ public class ParserSym {
   public static final int HALL = 28;
   public static final int PLUS = 2;
   public static final int ID = 30;
-  public static final int DECIMAL = 42;
+  public static final int DECIMAL = 40;
   public static final int EOF = 0;
   public static final int BRICK = 27;
   public static final int PLAYER = 24;
   public static final int UCOLOR = 17;
-  public static final int COMILLAS = 34;
+  public static final int COMILLAS = 33;
   public static final int error = 1;
-  public static final int P_COMMA = 33;
+  public static final int WORLD = 41;
   public static final int NAME = 8;
   public static final int POSY = 21;
   public static final int POSX = 20;
@@ -49,6 +49,7 @@ public class ParserSym {
   public static final int ROW = 9;
   public static final int DPUNTOS = 31;
   public static final int Parenth_C = 7;
+  public static final int ALL = 43;
   public static final int CEIL = 26;
   public static final int PCOLOR = 18;
   public static final String[] terminalNames = new String[] {
@@ -85,16 +86,17 @@ public class ParserSym {
   "ID",
   "DPUNTOS",
   "COMMA",
-  "P_COMMA",
   "COMILLAS",
   "Key_O",
   "Key_C",
   "Cor_O",
   "Cor_C",
   "TARGETS",
-  "HASH",
   "INT",
-  "DECIMAL"
+  "DECIMAL",
+  "WORLD",
+  "WORLDS",
+  "ALL"
   };
 }
 

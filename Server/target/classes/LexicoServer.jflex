@@ -26,7 +26,7 @@ Id 		= [:jletter:] [:jletterdigit:]*
 Integer 	= 0 | [1-9][0-9]*
 Decimal 	= {Integer}\.\d+
 Hexa		= [0-9]|[a-f]
-HexaDec 	= {Hexa}{6}
+HexaDec 	= "#"{Hexa}{6}
 LineTerminator = \r|\n|\r\n
 WhiteSpace     = {LineTerminator} | [ \t\f]
 
@@ -39,6 +39,9 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 
 /*Actions*/
 %%
+(all)                   {return token(ALL);}
+(world)                 {return token(WORLD);}
+(worlds)		{return token(WORLDS);}
 (name)			{return token(NAME);}
 (rows)			{return token(ROW);}
 (cols)			{return token(COLS);}
@@ -75,7 +78,6 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 "*"			{return token(MULT);}
 ":"			{return token(DPUNTOS);}
 ","			{return token(COMMA);}
-";"			{return token(P_COMMA);}
 "\""			{return token(COMILLAS);}
 ")"			{return token(Parenth_C);}	
 "("			{return token(Parenth_O);}
@@ -83,7 +85,6 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 "}"			{return token(Key_C);}
 "["			{return token(Cor_O);}
 "]"			{return token(Cor_C);}
-"#"                     {return token(HASH);}
 [^]			{System.out.println("ERROR    " + yytext());}
 
 

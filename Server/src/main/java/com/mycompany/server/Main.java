@@ -3,9 +3,11 @@
  */
 
 package com.mycompany.server;
-
 import com.mycompany.server.parser.ParserServer;
+import com.mycompany.server.ventana.PRUEBAS;
 import java.util.Scanner;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 
 
@@ -15,14 +17,16 @@ import java.util.Scanner;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParserConfigurationException, TransformerException {
+        /*
         Scanner n = new Scanner(System.in);
         String Text;
         Text = n.nextLine();
         ParserServer P = new ParserServer();
         P.Parsear(Text);
-        String Numero = "12.5";
-        Double N = Math.floor(Double.valueOf(Numero));
+        */
+        PRUEBAS A = new PRUEBAS();
+        A.setVisible(true);
         
     }
 }

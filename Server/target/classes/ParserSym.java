@@ -9,45 +9,49 @@ package com.mycompany.server.parser;
 public class ParserSym {
   /* terminals */
   public static final int TCOLOR = 13;
+  public static final int WORLDS = 42;
   public static final int MULT = 4;
   public static final int Key_O = 34;
-  public static final int HEXA = 28;
+  public static final int BRCOLOR = 15;
+  public static final int HEXA = 29;
+  public static final int TARGETS = 38;
   public static final int Cor_O = 36;
-  public static final int INT = 38;
+  public static final int INT = 39;
   public static final int Key_C = 35;
   public static final int MINUS = 3;
-  public static final int FLOOR = 24;
+  public static final int FLOOR = 25;
   public static final int CONFIG = 11;
   public static final int Cor_C = 37;
-  public static final int TYPE = 21;
-  public static final int BOARD = 18;
-  public static final int COMMA = 31;
+  public static final int TYPE = 22;
+  public static final int BOARD = 19;
+  public static final int COMMA = 32;
   public static final int BOTCOLOR = 12;
   public static final int DIV = 5;
-  public static final int HALL = 27;
+  public static final int HALL = 28;
   public static final int PLUS = 2;
-  public static final int ID = 29;
-  public static final int DECIMAL = 39;
+  public static final int ID = 30;
+  public static final int DECIMAL = 40;
   public static final int EOF = 0;
-  public static final int BRICK = 26;
-  public static final int PLAYER = 23;
-  public static final int UCOLOR = 16;
+  public static final int BRICK = 27;
+  public static final int PLAYER = 24;
+  public static final int UCOLOR = 17;
   public static final int COMILLAS = 33;
   public static final int error = 1;
-  public static final int P_COMMA = 32;
+  public static final int WORLD = 41;
   public static final int NAME = 8;
-  public static final int POSY = 20;
-  public static final int POSX = 19;
+  public static final int POSY = 21;
+  public static final int POSX = 20;
   public static final int COLS = 10;
   public static final int BCOLOR = 14;
   public static final int Parenth_O = 6;
-  public static final int BOXES = 22;
-  public static final int HCOLOR = 15;
+  public static final int BOXES = 23;
+  public static final int HCOLOR = 16;
   public static final int ROW = 9;
-  public static final int DPUNTOS = 30;
+  public static final int DPUNTOS = 31;
   public static final int Parenth_C = 7;
-  public static final int CEIL = 25;
-  public static final int PCOLOR = 17;
+  public static final int ALL = 43;
+  public static final int CEIL = 26;
+  public static final int PCOLOR = 18;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -64,6 +68,7 @@ public class ParserSym {
   "BOTCOLOR",
   "TCOLOR",
   "BCOLOR",
+  "BRCOLOR",
   "HCOLOR",
   "UCOLOR",
   "PCOLOR",
@@ -81,14 +86,17 @@ public class ParserSym {
   "ID",
   "DPUNTOS",
   "COMMA",
-  "P_COMMA",
   "COMILLAS",
   "Key_O",
   "Key_C",
   "Cor_O",
   "Cor_C",
+  "TARGETS",
   "INT",
-  "DECIMAL"
+  "DECIMAL",
+  "WORLD",
+  "WORLDS",
+  "ALL"
   };
 }
 

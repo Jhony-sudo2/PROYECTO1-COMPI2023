@@ -15,13 +15,17 @@ public class ParserServer {
      Lexer lexer;
      Parser parser;
     
+    
+   public ParserServer(){
+       
+   }  
    public void Parsear(String Text){
        Reader reader = new StringReader(Text);
        lexer = new Lexer(reader);
        parser = new Parser(lexer);
-      
        try{
            parser.parse();
+            
        }catch(Exception e){
            e.printStackTrace();
        }
